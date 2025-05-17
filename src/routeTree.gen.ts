@@ -12,20 +12,19 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RedirectImport } from './routes/redirect'
-import { Route as DeferredImport } from './routes/deferred'
-import { Route as PathlessLayoutImport } from './routes/_pathlessLayout'
+import { Route as PagesImport } from './routes/_pages'
 import { Route as UsersRouteImport } from './routes/users.route'
 import { Route as PostsRouteImport } from './routes/posts.route'
-import { Route as IndexImport } from './routes/index'
 import { Route as UsersIndexImport } from './routes/users.index'
 import { Route as PostsIndexImport } from './routes/posts.index'
+import { Route as PagesIndexImport } from './routes/_pages/index'
 import { Route as UsersUserIdImport } from './routes/users.$userId'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
-import { Route as PathlessLayoutNestedLayoutImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as PostsPostIdDeepImport } from './routes/posts_.$postId.deep'
-import { Route as PathlessLayoutNestedLayoutRouteCYaImport } from './routes/_pathlessLayout/_nested-layout/route-c-ya'
-import { Route as PathlessLayoutNestedLayoutRouteBImport } from './routes/_pathlessLayout/_nested-layout/route-b'
-import { Route as PathlessLayoutNestedLayoutRouteAImport } from './routes/_pathlessLayout/_nested-layout/route-a'
+import { Route as PagesPoolPoolListImport } from './routes/_pages/_pool/pool-list'
+import { Route as PagesHomeHomeImport } from './routes/_pages/_home/home'
+import { Route as PagesAlgoAlgoListRouteImport } from './routes/_pages/_algo/algo-list.route'
+import { Route as PagesAlgoAlgoListIndexImport } from './routes/_pages/_algo/algo-list.index'
 
 // Create/Update Routes
 
@@ -35,14 +34,8 @@ const RedirectRoute = RedirectImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DeferredRoute = DeferredImport.update({
-  id: '/deferred',
-  path: '/deferred',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const PathlessLayoutRoute = PathlessLayoutImport.update({
-  id: '/_pathlessLayout',
+const PagesRoute = PagesImport.update({
+  id: '/_pages',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -58,12 +51,6 @@ const PostsRouteRoute = PostsRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const UsersIndexRoute = UsersIndexImport.update({
   id: '/',
   path: '/',
@@ -74,6 +61,12 @@ const PostsIndexRoute = PostsIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PostsRouteRoute,
+} as any)
+
+const PagesIndexRoute = PagesIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PagesRoute,
 } as any)
 
 const UsersUserIdRoute = UsersUserIdImport.update({
@@ -88,51 +81,40 @@ const PostsPostIdRoute = PostsPostIdImport.update({
   getParentRoute: () => PostsRouteRoute,
 } as any)
 
-const PathlessLayoutNestedLayoutRoute = PathlessLayoutNestedLayoutImport.update(
-  {
-    id: '/_nested-layout',
-    getParentRoute: () => PathlessLayoutRoute,
-  } as any,
-)
-
 const PostsPostIdDeepRoute = PostsPostIdDeepImport.update({
   id: '/posts_/$postId/deep',
   path: '/posts/$postId/deep',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PathlessLayoutNestedLayoutRouteCYaRoute =
-  PathlessLayoutNestedLayoutRouteCYaImport.update({
-    id: '/route-c-ya',
-    path: '/route-c-ya',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
-  } as any)
+const PagesPoolPoolListRoute = PagesPoolPoolListImport.update({
+  id: '/_pool/pool-list',
+  path: '/pool-list',
+  getParentRoute: () => PagesRoute,
+} as any)
 
-const PathlessLayoutNestedLayoutRouteBRoute =
-  PathlessLayoutNestedLayoutRouteBImport.update({
-    id: '/route-b',
-    path: '/route-b',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
-  } as any)
+const PagesHomeHomeRoute = PagesHomeHomeImport.update({
+  id: '/_home/home',
+  path: '/home',
+  getParentRoute: () => PagesRoute,
+} as any)
 
-const PathlessLayoutNestedLayoutRouteARoute =
-  PathlessLayoutNestedLayoutRouteAImport.update({
-    id: '/route-a',
-    path: '/route-a',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
-  } as any)
+const PagesAlgoAlgoListRouteRoute = PagesAlgoAlgoListRouteImport.update({
+  id: '/_algo/algo-list',
+  path: '/algo-list',
+  getParentRoute: () => PagesRoute,
+} as any)
+
+const PagesAlgoAlgoListIndexRoute = PagesAlgoAlgoListIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PagesAlgoAlgoListRouteRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/posts': {
       id: '/posts'
       path: '/posts'
@@ -147,18 +129,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteImport
       parentRoute: typeof rootRoute
     }
-    '/_pathlessLayout': {
-      id: '/_pathlessLayout'
+    '/_pages': {
+      id: '/_pages'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/deferred': {
-      id: '/deferred'
-      path: '/deferred'
-      fullPath: '/deferred'
-      preLoaderRoute: typeof DeferredImport
+      preLoaderRoute: typeof PagesImport
       parentRoute: typeof rootRoute
     }
     '/redirect': {
@@ -167,13 +142,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/redirect'
       preLoaderRoute: typeof RedirectImport
       parentRoute: typeof rootRoute
-    }
-    '/_pathlessLayout/_nested-layout': {
-      id: '/_pathlessLayout/_nested-layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutImport
-      parentRoute: typeof PathlessLayoutImport
     }
     '/posts/$postId': {
       id: '/posts/$postId'
@@ -189,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdImport
       parentRoute: typeof UsersRouteImport
     }
+    '/_pages/': {
+      id: '/_pages/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PagesIndexImport
+      parentRoute: typeof PagesImport
+    }
     '/posts/': {
       id: '/posts/'
       path: '/'
@@ -203,26 +178,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexImport
       parentRoute: typeof UsersRouteImport
     }
-    '/_pathlessLayout/_nested-layout/route-a': {
-      id: '/_pathlessLayout/_nested-layout/route-a'
-      path: '/route-a'
-      fullPath: '/route-a'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteAImport
-      parentRoute: typeof PathlessLayoutNestedLayoutImport
+    '/_pages/_algo/algo-list': {
+      id: '/_pages/_algo/algo-list'
+      path: '/algo-list'
+      fullPath: '/algo-list'
+      preLoaderRoute: typeof PagesAlgoAlgoListRouteImport
+      parentRoute: typeof PagesImport
     }
-    '/_pathlessLayout/_nested-layout/route-b': {
-      id: '/_pathlessLayout/_nested-layout/route-b'
-      path: '/route-b'
-      fullPath: '/route-b'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteBImport
-      parentRoute: typeof PathlessLayoutNestedLayoutImport
+    '/_pages/_home/home': {
+      id: '/_pages/_home/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof PagesHomeHomeImport
+      parentRoute: typeof PagesImport
     }
-    '/_pathlessLayout/_nested-layout/route-c-ya': {
-      id: '/_pathlessLayout/_nested-layout/route-c-ya'
-      path: '/route-c-ya'
-      fullPath: '/route-c-ya'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteCYaImport
-      parentRoute: typeof PathlessLayoutNestedLayoutImport
+    '/_pages/_pool/pool-list': {
+      id: '/_pages/_pool/pool-list'
+      path: '/pool-list'
+      fullPath: '/pool-list'
+      preLoaderRoute: typeof PagesPoolPoolListImport
+      parentRoute: typeof PagesImport
     }
     '/posts_/$postId/deep': {
       id: '/posts_/$postId/deep'
@@ -230,6 +205,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/posts/$postId/deep'
       preLoaderRoute: typeof PostsPostIdDeepImport
       parentRoute: typeof rootRoute
+    }
+    '/_pages/_algo/algo-list/': {
+      id: '/_pages/_algo/algo-list/'
+      path: '/'
+      fullPath: '/algo-list/'
+      preLoaderRoute: typeof PagesAlgoAlgoListIndexImport
+      parentRoute: typeof PagesAlgoAlgoListRouteImport
     }
   }
 }
@@ -264,157 +246,144 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
   UsersRouteRouteChildren,
 )
 
-interface PathlessLayoutNestedLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRouteARoute: typeof PathlessLayoutNestedLayoutRouteARoute
-  PathlessLayoutNestedLayoutRouteBRoute: typeof PathlessLayoutNestedLayoutRouteBRoute
-  PathlessLayoutNestedLayoutRouteCYaRoute: typeof PathlessLayoutNestedLayoutRouteCYaRoute
+interface PagesAlgoAlgoListRouteRouteChildren {
+  PagesAlgoAlgoListIndexRoute: typeof PagesAlgoAlgoListIndexRoute
 }
 
-const PathlessLayoutNestedLayoutRouteChildren: PathlessLayoutNestedLayoutRouteChildren =
+const PagesAlgoAlgoListRouteRouteChildren: PagesAlgoAlgoListRouteRouteChildren =
   {
-    PathlessLayoutNestedLayoutRouteARoute:
-      PathlessLayoutNestedLayoutRouteARoute,
-    PathlessLayoutNestedLayoutRouteBRoute:
-      PathlessLayoutNestedLayoutRouteBRoute,
-    PathlessLayoutNestedLayoutRouteCYaRoute:
-      PathlessLayoutNestedLayoutRouteCYaRoute,
+    PagesAlgoAlgoListIndexRoute: PagesAlgoAlgoListIndexRoute,
   }
 
-const PathlessLayoutNestedLayoutRouteWithChildren =
-  PathlessLayoutNestedLayoutRoute._addFileChildren(
-    PathlessLayoutNestedLayoutRouteChildren,
+const PagesAlgoAlgoListRouteRouteWithChildren =
+  PagesAlgoAlgoListRouteRoute._addFileChildren(
+    PagesAlgoAlgoListRouteRouteChildren,
   )
 
-interface PathlessLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRoute: typeof PathlessLayoutNestedLayoutRouteWithChildren
+interface PagesRouteChildren {
+  PagesIndexRoute: typeof PagesIndexRoute
+  PagesAlgoAlgoListRouteRoute: typeof PagesAlgoAlgoListRouteRouteWithChildren
+  PagesHomeHomeRoute: typeof PagesHomeHomeRoute
+  PagesPoolPoolListRoute: typeof PagesPoolPoolListRoute
 }
 
-const PathlessLayoutRouteChildren: PathlessLayoutRouteChildren = {
-  PathlessLayoutNestedLayoutRoute: PathlessLayoutNestedLayoutRouteWithChildren,
+const PagesRouteChildren: PagesRouteChildren = {
+  PagesIndexRoute: PagesIndexRoute,
+  PagesAlgoAlgoListRouteRoute: PagesAlgoAlgoListRouteRouteWithChildren,
+  PagesHomeHomeRoute: PagesHomeHomeRoute,
+  PagesPoolPoolListRoute: PagesPoolPoolListRoute,
 }
 
-const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
-  PathlessLayoutRouteChildren,
-)
+const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '': typeof PathlessLayoutNestedLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
+  '': typeof PagesRouteWithChildren
   '/redirect': typeof RedirectRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/': typeof PagesIndexRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/route-c-ya': typeof PathlessLayoutNestedLayoutRouteCYaRoute
+  '/algo-list': typeof PagesAlgoAlgoListRouteRouteWithChildren
+  '/home': typeof PagesHomeHomeRoute
+  '/pool-list': typeof PagesPoolPoolListRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/algo-list/': typeof PagesAlgoAlgoListIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof PathlessLayoutNestedLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/': typeof PagesIndexRoute
   '/posts': typeof PostsIndexRoute
   '/users': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/route-c-ya': typeof PathlessLayoutNestedLayoutRouteCYaRoute
+  '/home': typeof PagesHomeHomeRoute
+  '/pool-list': typeof PagesPoolPoolListRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/algo-list': typeof PagesAlgoAlgoListIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
+  '/_pages': typeof PagesRouteWithChildren
   '/redirect': typeof RedirectRoute
-  '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/_pages/': typeof PagesIndexRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/_pathlessLayout/_nested-layout/route-c-ya': typeof PathlessLayoutNestedLayoutRouteCYaRoute
+  '/_pages/_algo/algo-list': typeof PagesAlgoAlgoListRouteRouteWithChildren
+  '/_pages/_home/home': typeof PagesHomeHomeRoute
+  '/_pages/_pool/pool-list': typeof PagesPoolPoolListRoute
   '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
+  '/_pages/_algo/algo-list/': typeof PagesAlgoAlgoListIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/posts'
     | '/users'
     | ''
-    | '/deferred'
     | '/redirect'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/'
     | '/posts/'
     | '/users/'
-    | '/route-a'
-    | '/route-b'
-    | '/route-c-ya'
+    | '/algo-list'
+    | '/home'
+    | '/pool-list'
     | '/posts/$postId/deep'
+    | '/algo-list/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | ''
-    | '/deferred'
     | '/redirect'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/'
     | '/posts'
     | '/users'
-    | '/route-a'
-    | '/route-b'
-    | '/route-c-ya'
+    | '/home'
+    | '/pool-list'
     | '/posts/$postId/deep'
+    | '/algo-list'
   id:
     | '__root__'
-    | '/'
     | '/posts'
     | '/users'
-    | '/_pathlessLayout'
-    | '/deferred'
+    | '/_pages'
     | '/redirect'
-    | '/_pathlessLayout/_nested-layout'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/_pages/'
     | '/posts/'
     | '/users/'
-    | '/_pathlessLayout/_nested-layout/route-a'
-    | '/_pathlessLayout/_nested-layout/route-b'
-    | '/_pathlessLayout/_nested-layout/route-c-ya'
+    | '/_pages/_algo/algo-list'
+    | '/_pages/_home/home'
+    | '/_pages/_pool/pool-list'
     | '/posts_/$postId/deep'
+    | '/_pages/_algo/algo-list/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
-  PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
-  DeferredRoute: typeof DeferredRoute
+  PagesRoute: typeof PagesRouteWithChildren
   RedirectRoute: typeof RedirectRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   PostsRouteRoute: PostsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
-  PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
-  DeferredRoute: DeferredRoute,
+  PagesRoute: PagesRouteWithChildren,
   RedirectRoute: RedirectRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,
 }
@@ -429,17 +398,12 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/posts",
         "/users",
-        "/_pathlessLayout",
-        "/deferred",
+        "/_pages",
         "/redirect",
         "/posts_/$postId/deep"
       ]
-    },
-    "/": {
-      "filePath": "index.tsx"
     },
     "/posts": {
       "filePath": "posts.route.tsx",
@@ -455,26 +419,17 @@ export const routeTree = rootRoute
         "/users/"
       ]
     },
-    "/_pathlessLayout": {
-      "filePath": "_pathlessLayout.tsx",
+    "/_pages": {
+      "filePath": "_pages.tsx",
       "children": [
-        "/_pathlessLayout/_nested-layout"
+        "/_pages/",
+        "/_pages/_algo/algo-list",
+        "/_pages/_home/home",
+        "/_pages/_pool/pool-list"
       ]
-    },
-    "/deferred": {
-      "filePath": "deferred.tsx"
     },
     "/redirect": {
       "filePath": "redirect.tsx"
-    },
-    "/_pathlessLayout/_nested-layout": {
-      "filePath": "_pathlessLayout/_nested-layout.tsx",
-      "parent": "/_pathlessLayout",
-      "children": [
-        "/_pathlessLayout/_nested-layout/route-a",
-        "/_pathlessLayout/_nested-layout/route-b",
-        "/_pathlessLayout/_nested-layout/route-c-ya"
-      ]
     },
     "/posts/$postId": {
       "filePath": "posts.$postId.tsx",
@@ -484,6 +439,10 @@ export const routeTree = rootRoute
       "filePath": "users.$userId.tsx",
       "parent": "/users"
     },
+    "/_pages/": {
+      "filePath": "_pages/index.tsx",
+      "parent": "/_pages"
+    },
     "/posts/": {
       "filePath": "posts.index.tsx",
       "parent": "/posts"
@@ -492,20 +451,27 @@ export const routeTree = rootRoute
       "filePath": "users.index.tsx",
       "parent": "/users"
     },
-    "/_pathlessLayout/_nested-layout/route-a": {
-      "filePath": "_pathlessLayout/_nested-layout/route-a.tsx",
-      "parent": "/_pathlessLayout/_nested-layout"
+    "/_pages/_algo/algo-list": {
+      "filePath": "_pages/_algo/algo-list.route.tsx",
+      "parent": "/_pages",
+      "children": [
+        "/_pages/_algo/algo-list/"
+      ]
     },
-    "/_pathlessLayout/_nested-layout/route-b": {
-      "filePath": "_pathlessLayout/_nested-layout/route-b.tsx",
-      "parent": "/_pathlessLayout/_nested-layout"
+    "/_pages/_home/home": {
+      "filePath": "_pages/_home/home.tsx",
+      "parent": "/_pages"
     },
-    "/_pathlessLayout/_nested-layout/route-c-ya": {
-      "filePath": "_pathlessLayout/_nested-layout/route-c-ya.tsx",
-      "parent": "/_pathlessLayout/_nested-layout"
+    "/_pages/_pool/pool-list": {
+      "filePath": "_pages/_pool/pool-list.tsx",
+      "parent": "/_pages"
     },
     "/posts_/$postId/deep": {
       "filePath": "posts_.$postId.deep.tsx"
+    },
+    "/_pages/_algo/algo-list/": {
+      "filePath": "_pages/_algo/algo-list.index.tsx",
+      "parent": "/_pages/_algo/algo-list"
     }
   }
 }

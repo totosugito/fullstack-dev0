@@ -1,19 +1,49 @@
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
+import {TanStackRouterDevtools} from '@tanstack/react-router-devtools'
 import * as React from 'react'
-import type { QueryClient } from '@tanstack/react-query'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
+import type {QueryClient} from '@tanstack/react-query'
+import {DefaultCatchBoundary} from 'src/components/DefaultCatchBoundary'
+import {NotFound} from 'src/components/NotFound'
 // @ts-ignore
-import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
+import appCss from 'src/assets/globals.css?url'
+
+const seo = ({
+               title,
+               description,
+               keywords,
+               image,
+             }: {
+  title: string
+  description?: string
+  image?: string
+  keywords?: string
+}) => {
+  return [
+    {title},
+    {name: 'description', content: description},
+    {name: 'keywords', content: keywords},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:creator', content: '@tannerlinsley'},
+    {name: 'twitter:site', content: '@tannerlinsley'},
+    {name: 'og:type', content: 'website'},
+    {name: 'og:title', content: title},
+    {name: 'og:description', content: description},
+    ...(image
+      ? [
+        {name: 'twitter:image', content: image},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'og:image', content: image},
+      ]
+      : []),
+  ]
+}
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -28,13 +58,12 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        title: 'MiningRank.Com',
+        description: `Best Mining Reference Website`,
       }),
     ],
     links: [
-      { rel: 'stylesheet', href: appCss },
+      {rel: 'stylesheet', href: appCss},
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',
@@ -52,8 +81,8 @@ export const Route = createRootRouteWithContext<{
         sizes: '16x16',
         href: '/favicon-16x16.png',
       },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
+      {rel: 'manifest', href: '/site.webmanifest', color: '#fffff'},
+      {rel: 'icon', href: '/favicon.ico'},
     ],
   }),
   errorComponent: (props) => {
@@ -63,83 +92,30 @@ export const Route = createRootRouteWithContext<{
       </RootDocument>
     )
   },
-  notFoundComponent: () => <NotFound />,
+  notFoundComponent: () => <NotFound/>,
   component: RootComponent,
 })
 
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Outlet/>
     </RootDocument>
   )
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({children}: { children: React.ReactNode }) {
   return (
     <html>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <div className="p-2 flex gap-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: 'font-bold',
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{' '}
-          <Link
-            to="/posts"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Posts
-          </Link>{' '}
-          <Link
-            to="/users"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Users
-          </Link>{' '}
-          <Link
-            to="/route-a"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Pathless Layout
-          </Link>{' '}
-          <Link
-            to="/deferred"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Deferred
-          </Link>{' '}
-          <Link
-            // @ts-expect-error
-            to="/this-route-does-not-exist"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            This Route Does Not Exist
-          </Link>
-        </div>
-        <hr />
-        {children}
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
-        <Scripts />
-      </body>
+    <head>
+      <title></title><HeadContent/>
+    </head>
+    <body>
+    {children}
+    <TanStackRouterDevtools position="bottom-right"/>
+    <ReactQueryDevtools buttonPosition="bottom-left"/>
+    <Scripts/>
+    </body>
     </html>
   )
 }
