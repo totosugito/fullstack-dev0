@@ -12,6 +12,7 @@ import {DefaultCatchBoundary} from 'src/components/DefaultCatchBoundary'
 import {NotFound} from 'src/components/NotFound'
 // @ts-ignore
 import appCss from 'src/assets/globals.css?url'
+import {Toaster} from "~/components/ui/sonner";
 
 const seo = ({
                title,
@@ -58,8 +59,8 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: 'MiningRank.Com',
-        description: `Best Mining Reference Website`,
+        title: 'Tanstack-Start Template',
+        description: `Tanstack-Start + Better-Auth Template`,
       }),
     ],
     links: [
@@ -100,6 +101,7 @@ function RootComponent() {
   return (
     <RootDocument>
       <Outlet/>
+      <Toaster />
     </RootDocument>
   )
 }

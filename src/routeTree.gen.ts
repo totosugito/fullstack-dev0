@@ -20,6 +20,8 @@ import { Route as PostsIndexImport } from './routes/posts.index'
 import { Route as PagesIndexImport } from './routes/_pages/index'
 import { Route as UsersUserIdImport } from './routes/users.$userId'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
+import { Route as AuthSignupImport } from './routes/auth/signup'
+import { Route as AuthSigninImport } from './routes/auth/signin'
 import { Route as PostsPostIdDeepImport } from './routes/posts_.$postId.deep'
 import { Route as PagesPoolPoolListImport } from './routes/_pages/_pool/pool-list'
 import { Route as PagesHomeHomeImport } from './routes/_pages/_home/home'
@@ -79,6 +81,18 @@ const PostsPostIdRoute = PostsPostIdImport.update({
   id: '/$postId',
   path: '/$postId',
   getParentRoute: () => PostsRouteRoute,
+} as any)
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthSigninRoute = AuthSigninImport.update({
+  id: '/auth/signin',
+  path: '/auth/signin',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const PostsPostIdDeepRoute = PostsPostIdDeepImport.update({
@@ -141,6 +155,20 @@ declare module '@tanstack/react-router' {
       path: '/redirect'
       fullPath: '/redirect'
       preLoaderRoute: typeof RedirectImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/signin': {
+      id: '/auth/signin'
+      path: '/auth/signin'
+      fullPath: '/auth/signin'
+      preLoaderRoute: typeof AuthSigninImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof rootRoute
     }
     '/posts/$postId': {
@@ -281,6 +309,8 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '': typeof PagesRouteWithChildren
   '/redirect': typeof RedirectRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/': typeof PagesIndexRoute
@@ -295,6 +325,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/redirect': typeof RedirectRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/': typeof PagesIndexRoute
@@ -312,6 +344,8 @@ export interface FileRoutesById {
   '/users': typeof UsersRouteRouteWithChildren
   '/_pages': typeof PagesRouteWithChildren
   '/redirect': typeof RedirectRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/_pages/': typeof PagesIndexRoute
@@ -331,6 +365,8 @@ export interface FileRouteTypes {
     | '/users'
     | ''
     | '/redirect'
+    | '/auth/signin'
+    | '/auth/signup'
     | '/posts/$postId'
     | '/users/$userId'
     | '/'
@@ -344,6 +380,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/redirect'
+    | '/auth/signin'
+    | '/auth/signup'
     | '/posts/$postId'
     | '/users/$userId'
     | '/'
@@ -359,6 +397,8 @@ export interface FileRouteTypes {
     | '/users'
     | '/_pages'
     | '/redirect'
+    | '/auth/signin'
+    | '/auth/signup'
     | '/posts/$postId'
     | '/users/$userId'
     | '/_pages/'
@@ -377,6 +417,8 @@ export interface RootRouteChildren {
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   PagesRoute: typeof PagesRouteWithChildren
   RedirectRoute: typeof RedirectRoute
+  AuthSigninRoute: typeof AuthSigninRoute
+  AuthSignupRoute: typeof AuthSignupRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
 }
 
@@ -385,6 +427,8 @@ const rootRouteChildren: RootRouteChildren = {
   UsersRouteRoute: UsersRouteRouteWithChildren,
   PagesRoute: PagesRouteWithChildren,
   RedirectRoute: RedirectRoute,
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,
 }
 
@@ -402,6 +446,8 @@ export const routeTree = rootRoute
         "/users",
         "/_pages",
         "/redirect",
+        "/auth/signin",
+        "/auth/signup",
         "/posts_/$postId/deep"
       ]
     },
@@ -430,6 +476,12 @@ export const routeTree = rootRoute
     },
     "/redirect": {
       "filePath": "redirect.tsx"
+    },
+    "/auth/signin": {
+      "filePath": "auth/signin.tsx"
+    },
+    "/auth/signup": {
+      "filePath": "auth/signup.tsx"
     },
     "/posts/$postId": {
       "filePath": "posts.$postId.tsx",
